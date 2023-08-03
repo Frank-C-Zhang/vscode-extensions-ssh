@@ -1,0 +1,27 @@
+{
+  "name": "light-ssh",
+  "description": "实现本地简单部署的vscode插件",
+  "version": "0.0.1",
+  "publisher": "frank",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FourLeafClover/vscode-extensions-ssh"
+  },
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "commands": []
+  },
+  "scripts": {},
+  "devDependencies": {
+    "@types/vscode": "^1.73.0"
+  },
+  "dependencies": {
+    "node-ssh": "^13.1.0"
+  }
+}
