@@ -1,6 +1,6 @@
 *欢迎使用 ssh*
   
-> ssh 是一个免去ssh操作的vs code 插件
+> ssh 是一个简化ssh操作的vs code 插件
 
 > 项目地址: https://github.com/FourLeafClover/vscode-extensions-ssh
 
@@ -9,7 +9,9 @@
 *介绍*
 
 > 对于部分未安装自动部署环境的服务器，普遍操作是登录服务器通过sftp上传代码包，手动执行命令, light-ssh可为您简化此操作，通过配置config文件就能实现 登录服务器->上传文件/文件夹->支持cmd命令。
+
 > light-ssh 支持多配置，主要用于不同环境的发布。
+
 > 日志发布过程可在OUTPUT里面查看
 
 *如何打包visix*
