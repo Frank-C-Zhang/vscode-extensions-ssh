@@ -48,7 +48,7 @@ function activate(context) {
 								concurrency: 10,
 								validate: function (itemPath) {
 									const baseName = path.basename(itemPath)
-									return !ignore.includes(baseName)
+									return (!ignore) || (!ignore.includes(baseName))
 								},
 								tick: function (localPath, remotePath, error) {
 									setLog(localPath)
