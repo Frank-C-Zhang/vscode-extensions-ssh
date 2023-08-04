@@ -5,6 +5,7 @@ const { NodeSSH } = require('node-ssh')
 const ssh = new NodeSSH()
 const path = require('path')
 const fs = require('fs')
+let outputChannel = null
 
 const getRootPath = () => {
 	return vscode.workspace.workspaceFolders[0]?.uri.fsPath || ''
@@ -17,10 +18,15 @@ const getConfigList = () => {
 	return configList
 }
 
+const setLog = (str)=>{
+	outputChannel.appendLine(str);
+}
+
 function activate(context) {
 	// 获取配置
 	const rootPath = getRootPath()
 	const configList = getConfigList()
+	outputChannel= vscode.window.createOutputChannel('SSH Logs')
 	if (configList && Array.isArray(configList) && configList.length > 0) {
 		for (let index in configList) {
 			const config = configList[index]
@@ -28,6 +34,7 @@ function activate(context) {
 
 			// 通过不同配置注册事件
 			const disposable = vscode.commands.registerCommand(`SSH.${name}`, async () => {
+				outputChannel.show(true)
 				// 上传多个文件夹
 				const putDirectoryFun = async () => {
 					if (putDirectories && Array.isArray(putDirectories) && putDirectories.length > 0) {
@@ -35,7 +42,7 @@ function activate(context) {
 							const { local, remote, ignore } = putDirectories[index]
 							const failed = []
 							const successful = []
-							console.log(`Upload Directory：${local} -> ${remote}`)
+							setLog(`Upload Directory：${local} -> ${remote}`)
 							await ssh.putDirectory(path.resolve(rootPath, local), remote, {
 								recursive: true,
 								concurrency: 10,
@@ -44,7 +51,7 @@ function activate(context) {
 									return !ignore.includes(baseName)
 								},
 								tick: function (localPath, remotePath, error) {
-									console.log(localPath)
+									setLog(localPath)
 									if (error) {
 										failed.push(localPath)
 									} else {
@@ -59,7 +66,7 @@ function activate(context) {
 				// 上传多个文件
 				const putFilesFun = async () => {
 					if (putFiles && Array.isArray(putFiles) && putFiles.length > 0) {
-						console.log('Upload Files')
+						setLog('Upload Files')
 						await ssh.putFiles(putFiles.map(file => {
 							return {
 								local: path.resolve(rootPath, file.local),
@@ -71,33 +78,34 @@ function activate(context) {
 
 				// 执行CMD命令
 				const execCommandFun = async () => {
-					console.log('Exec Command')
+					setLog('Exec Command')
 					if (execCommands) {
 						for (let index in execCommands) {
 							const cmd = execCommands[index]
-							console.log(`[Command]:${cmd.command}`)
+							setLog(`[Command]:${cmd.command}`)
 							const res = await ssh.execCommand(cmd.command, {
 								cwd: cmd.cwd
 							})
-							console.log('STDOUT: \r\n' + res.stdout)
+							setLog('STDOUT: \r\n' + res.stdout)
 							if (res.stderr) {
-								console.log('STDERR: \r\n' + res.stderr)
+								setLog('STDERR: \r\n' + res.stderr)
 							}
 						}
 					}
 				}
 
 				ssh.connect(connect).then(async () => {
-					console.log(`${connect.host} connected`)
+					setLog(`${connect.host} connected`)
 					try {
 						await putDirectoryFun()
 						await putFilesFun()
 						await execCommandFun()
 					} catch (error) {
-						console.log(error)
+						setLog(error)
 					}
 					ssh.dispose()
-					console.log(`${connect.host} disposed`)
+					setLog(`${connect.host} disposed`)
+					vscode.window.showInformationMessage('SSH 脚本执行完毕')
 				})
 			})
 			context.subscriptions.push(disposable)

@@ -14,6 +14,7 @@
 
 > 日志发布过程可在OUTPUT里面查看
 
+
 *如何打包visix*
 
 > npm install -g vsce
@@ -24,7 +25,11 @@
 
 *如何配置*
 
-> 项目根路径下.vscode下创建ssh.config.json，项目中配置的时候请去掉右侧//备注，否则Json序列号会报错
+> 项目根路径下.vscode下创建ssh.config.json
+
+> 项目中配置的时候请去掉右侧//备注，否则Json序列号会报错
+
+> 配置是打开项目时读取一次，若修改了配置，请重启新项目/重新加载插件
 
 ```
 [
@@ -66,6 +71,15 @@
 ]
 
 ```
+
+*界面展示*
+
+> 底部StatusBar 会有一个 [SSH] 标签，鼠标放上去会显示配置的SSH结点列表
+
+> 点击后会在面板的OUTPUT输入SSH Logs日志
+
+![](https://fourleafclover.github.io/vscode/light-ssh/images/step.png)
+
 
 
  

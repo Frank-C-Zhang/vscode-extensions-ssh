@@ -1,6 +1,6 @@
 {
   "name": "light-ssh",
-  "description": "实现本地简单部署的vscode插件",
+  "description": "可用于SSH操作的轻量级插件",
   "version": "0.0.1",
   "publisher": "frank",
   "repository": {
@@ -17,6 +17,7 @@
   "contributes": {
     "commands": []
   },
+  "license": "MIT",
   "scripts": {},
   "devDependencies": {
     "@types/vscode": "^1.73.0"
