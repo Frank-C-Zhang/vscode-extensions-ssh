@@ -18,7 +18,7 @@ const getConfigList = () => {
 	return configList
 }
 
-const setLog = (str)=>{
+const setLog = (str) => {
 	outputChannel.appendLine(str);
 }
 
@@ -26,11 +26,11 @@ function activate(context) {
 	// 获取配置
 	const rootPath = getRootPath()
 	const configList = getConfigList()
-	outputChannel= vscode.window.createOutputChannel('SSH Logs')
+	outputChannel = vscode.window.createOutputChannel('SSH Logs')
 	if (configList && Array.isArray(configList) && configList.length > 0) {
 		for (let index in configList) {
 			const config = configList[index]
-			const { name, connect, putDirectories, putFiles, execCommands } = config
+			const { name, connect, putDirectories, putFiles, execCommands, beforeExecCommands } = config
 
 			// 通过不同配置注册事件
 			const disposable = vscode.commands.registerCommand(`SSH.${name}`, async () => {
@@ -94,9 +94,27 @@ function activate(context) {
 					}
 				}
 
+				const beforeExecCommandFun = async () => {
+					setLog('Before Exec Command')
+					if (execCommands) {
+						for (let index in beforeExecCommands) {
+							const cmd = beforeExecCommands[index]
+							setLog(`[Command]:${cmd.command}`)
+							const res = await ssh.execCommand(cmd.command, {
+								cwd: cmd.cwd
+							})
+							setLog('STDOUT: \r\n' + res.stdout)
+							if (res.stderr) {
+								setLog('STDERR: \r\n' + res.stderr)
+							}
+						}
+					}
+				}
+
 				ssh.connect(connect).then(async () => {
 					setLog(`${connect.host} connected`)
 					try {
+						await beforeExecCommandFun()
 						await putDirectoryFun()
 						await putFilesFun()
 						await execCommandFun()

@@ -41,6 +41,7 @@
       "username": "root",
       "password": "xxxx"
     },
+    "beforeExecCommands": [], // 上传文件之前执行的命令,比如前端加了hash的dist包，需要提前删除
     "putFiles": [ // 上传多个文件
       {
         "local": "./package.json", // 本地地址
