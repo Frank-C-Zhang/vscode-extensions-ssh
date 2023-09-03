@@ -22,24 +22,24 @@ const setLog = (str) => {
 	outputChannel.appendLine(str);
 }
 
-function activate(context) {
+const activate = (context) => {
 	// 获取配置
 	const rootPath = getRootPath()
 	const configList = getConfigList()
 	outputChannel = vscode.window.createOutputChannel('SSH Logs')
 	if (configList && Array.isArray(configList) && configList.length > 0) {
-		for (let index in configList) {
-			const config = configList[index]
+		for (const config of configList) {
 			const { name, connect, putDirectories, putFiles, execCommands, beforeExecCommands } = config
 
 			// 通过不同配置注册事件
 			const disposable = vscode.commands.registerCommand(`SSH.${name}`, async () => {
 				outputChannel.show(true)
+				
 				// 上传多个文件夹
 				const putDirectoryFun = async () => {
 					if (putDirectories && Array.isArray(putDirectories) && putDirectories.length > 0) {
-						for (let index in putDirectories) {
-							const { local, remote, ignore } = putDirectories[index]
+						for (const directory in putDirectories) {
+							const { local, remote, ignore } = directory
 							const failed = []
 							const successful = []
 							setLog(`Upload Directory：${local} -> ${remote}`)
@@ -66,8 +66,8 @@ function activate(context) {
 				// 上传多个文件
 				const putFilesFun = async () => {
 					if (putFiles && Array.isArray(putFiles) && putFiles.length > 0) {
-						setLog('Upload Files')
 						await ssh.putFiles(putFiles.map(file => {
+						  setLog(`Upload Files：${file.local} -> ${file.remote}`)
 							return {
 								local: path.resolve(rootPath, file.local),
 								remote: file.remote
@@ -80,8 +80,7 @@ function activate(context) {
 				const execCommandFun = async () => {
 					setLog('Exec Command')
 					if (execCommands) {
-						for (let index in execCommands) {
-							const cmd = execCommands[index]
+						for (let cmd of execCommands) {
 							setLog(`[Command]:${cmd.command}`)
 							const res = await ssh.execCommand(cmd.command, {
 								cwd: cmd.cwd
@@ -94,11 +93,11 @@ function activate(context) {
 					}
 				}
 
+				// 上传之前执行的CMD命令
 				const beforeExecCommandFun = async () => {
 					setLog('Before Exec Command')
 					if (execCommands) {
-						for (let index in beforeExecCommands) {
-							const cmd = beforeExecCommands[index]
+						for (let cmd of beforeExecCommands) {
 							setLog(`[Command]:${cmd.command}`)
 							const res = await ssh.execCommand(cmd.command, {
 								cwd: cmd.cwd
@@ -135,7 +134,7 @@ function activate(context) {
 // 设置底部状态栏
 const setStatusBar = (configList) => {
 	const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 1000);
-	statusBar.text = `[SSH]`
+	statusBar.text = '[SSH]'
 	const commandList = configList.map(ssh => {
 		return `[${ssh.name}](${vscode.Uri.parse(`command:SSH.${ssh.name}`)})`
 	})
