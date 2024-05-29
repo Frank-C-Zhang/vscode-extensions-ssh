@@ -1,6 +1,6 @@
 *欢迎使用 ssh*
   
-> ssh 是一个简化ssh操作的vs code 插件
+> light-ssh 是一个轻量级ssh插件
 
 > 项目地址: <https://github.com/FourLeafClover/vscode-extensions-ssh>
 
@@ -12,7 +12,7 @@
 
 > light-ssh 支持多配置，主要用于不同环境的发布。
 
-> 日志发布过程可在OUTPUT里面查看
+> 日志发布过程可在OUTPUT里面查看。
 
 *如何打包visix*
 
