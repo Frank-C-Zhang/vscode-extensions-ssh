@@ -51,10 +51,10 @@
       {
         "local": "./", // 本地地址
         "remote": "/usr/local/deploy", // 本地地址
-        "ignore": ["node_modules", ".git", ".vscode"] // 忽略文件夹
+        "ignore": ["node_modules", ".git", ".vscode"] // 忽略文件，通过路径includes匹配。若存在相同文件夹名，请精确文件夹路径
       }
     ],
-    "execCommands": [ // 上传文件玩出服务端执行命令
+    "execCommands": [ // 上传文件完成后执行的执行命令
       {
         "command": "npm i",  // 命令
         "cwd": "/usr/local/deploy" // 命令执行路径
