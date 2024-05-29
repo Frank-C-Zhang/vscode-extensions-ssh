@@ -2,9 +2,9 @@
   
 > ssh 是一个简化ssh操作的vs code 插件
 
-> 项目地址: https://github.com/FourLeafClover/vscode-extensions-ssh
+> 项目地址: <https://github.com/FourLeafClover/vscode-extensions-ssh>
 
-> 基于node-ssh: https://github.com/steelbrain/node-ssh
+> 基于node-ssh: <https://github.com/steelbrain/node-ssh>
 
 *介绍*
 
@@ -13,7 +13,6 @@
 > light-ssh 支持多配置，主要用于不同环境的发布。
 
 > 日志发布过程可在OUTPUT里面查看
-
 
 *如何打包visix*
 
@@ -55,7 +54,7 @@
         "ignore": ["node_modules", ".git", ".vscode"] // 忽略文件夹
       }
     ],
-    "execCommands": [ // 服务端执行命令
+    "execCommands": [ // 上传文件玩出服务端执行命令
       {
         "command": "npm i",  // 命令
         "cwd": "/usr/local/deploy" // 命令执行路径
@@ -80,8 +79,3 @@
 > 点击后会在面板的OUTPUT输入SSH Logs日志
 
 ![](https://fourleafclover.github.io/vscode/light-ssh/images/step.png)
-
-
-
- 
-  
