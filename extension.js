@@ -38,7 +38,7 @@ const activate = (context) => {
 				// 上传多个文件夹
 				const putDirectoryFun = async () => {
 					if (putDirectories && Array.isArray(putDirectories) && putDirectories.length > 0) {
-						for (const directory in putDirectories) {
+						for (const directory of putDirectories) {
 							const { local, remote, ignore } = directory
 							const failed = []
 							const successful = []
@@ -96,7 +96,7 @@ const activate = (context) => {
 				// 上传之前执行的CMD命令
 				const beforeExecCommandFun = async () => {
 					setLog('Before Exec Command')
-					if (execCommands) {
+					if (beforeExecCommands) {
 						for (let cmd of beforeExecCommands) {
 							setLog(`[Command]:${cmd.command}`)
 							const res = await ssh.execCommand(cmd.command, {
