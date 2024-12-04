@@ -78,4 +78,4 @@
 
 > 点击后会在面板的OUTPUT输入SSH Logs日志
 
-![](https://fourleafclover.github.io/vscode/light-ssh/images/step.png)
+![](https://frank-c-zhang.github.io/vscode/light-ssh/images/step.png)
